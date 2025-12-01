@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mission Kitchen: Meal Delivery with Organic Produce & Premium Proteins</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Menu, X, ChevronRight, Check, Truck, ChefHat, Leaf, Clock, Users, Star, PackageCheck } = lucide;
+
+        function MissionKitchen() {
+          const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+          const [selectedPlan, setSelectedPlan] = useState('balanced-living');
+          const [servings, setServings] = useState(2);
+          const [recipesPerWeek, setRecipesPerWeek] = useState(3);
+
+          const plans = [
+            {
+              id: 'balanced-living',
+              name: 'Balanced Living',
+              description: 'Well-rounded meals with organic produce',
+              image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
+              badge: 'Most Popular'
+            },
+            {
+              id: 'keto-paleo',
+              name: 'Keto & Paleo',
+              description: 'Low-carb, high-protein for your goals',
+              image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=800&q=80',
+              badge: null
+            },
+            {
+              id: 'plant-powered',
+              name: 'Plant Powered',
+              description: 'Vegetarian & vegan options',
+              image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80',
+              badge: null
+            },
+            {
+              id: 'quick-easy',
+              name: 'Quick & Easy',
+              description: 'Ready in 25 minutes or less',
+              image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80',
+              badge: null
+            }
+          ];
+
+          const calculatePrice = () => {
+            let pricePerServing = 11.99;
+            if (servings === 4) pricePerServing = 9.99;
+            if (recipesPerWeek >= 4) pricePerServing -= 1;
+            return (pricePerServing * servings * recipesPerWeek).toFixed(2);
+          };
+
+          const pricePerServing = () => {
+            return (calculatePrice() / (servings * recipesPerWeek)).toFixed(2);
+          };
+
+          return (
+            <div style={{ fontFamily: '"DM Sans", sans-serif', margin: 0, padding: 0 }}>
+              {/* Header */}
+              <header style={{
+                background: '#fff',
+                borderBottom: '1px solid #e5e5e5',
+                position: 'sticky',
+                top: 0,
+                zIndex: 1000,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+              }}>
+                <div style={{
+                  maxWidth: '1400px',
+                  margin: '0 auto',
+                  padding: '1rem 2rem',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: '1.5rem',
+                    fontWeight: '700',
+                    color: '#2d5f3f'
+                  }}>
+                    <Leaf size={28} strokeWidth={2.5} />
+                    <span>The Mission Kitchen</span>
+                  </div>
+                  
+                  <nav style={{
+                    display: 'flex',
+                    gap: '2rem',
+                    alignItems: 'center',
+                    fontSize: '0.95rem',
+                    fontWeight: '500'
+                  }}>
+                    <a href="#plans" style={{ color: '#333', textDecoration: 'none' }}>Plans</a>
+                    <a href="#menu" style={{ color: '#333', textDecoration: 'none' }}>Menu</a>
+                    <a href="#how-it-works" style={{ color: '#333', textDecoration: 'none' }}>How It Works</a>
+                    <a href="#" style={{ color: '#333', textDecoration: 'none' }}>Log In</a>
+                    <button style={{
+                      background: '#2d5f3f',
+                      color: '#fff',
+                      border: 'none',
+                      padding: '0.75rem 1.75rem',
+                      borderRadius: '6px',
+                      fontSize: '0.95rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}>
+                      Get Started
+                    </button>
+                  </nav>
+                </div>
+              </header>
+
+              {/* Hero Section */}
+              <section style={{
+                background: 'linear-gradient(135deg, #f8f9f5 0%, #e8ede5 100%)',
+                padding: '4rem 2rem',
+                minHeight: '600px',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <div style={{
+                  maxWidth: '1400px',
+                  margin: '0 auto',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '4rem',
+                  alignItems: 'center'
+                }}>
+                  <div>
+                    <div style={{
+                      display: 'inline-block',
+                      background: '#2d5f3f',
+                      color: '#fff',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '20px',
+                      fontSize: '0.85rem',
+                      fontWeight: '600',
+                      marginBottom: '1.5rem'
+                    }}>
+                      #1 Meal Kit for Eating Well
+                    </div>
+                    <h1 style={{
+                      fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                      fontWeight: '700',
+                      color: '#1a1a1a',
+                      marginBottom: '1.5rem',
+                      lineHeight: '1.1',
+                      fontFamily: '"Libre Baskerville", serif'
+                    }}>
+                      Meal Delivery with Organic Produce & Premium Proteins
+                    </h1>
+                    <p style={{
+                      fontSize: '1.25rem',
+                      color: '#555',
+                      marginBottom: '2.5rem',
+                      lineHeight: '1.6'
+                    }}>
+                      Thoughtfully curated meal kits that support the way you eat, including plant-based, keto, gluten-free, dairy-free, and more options.
+                    </p>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <button style={{
+                        background: '#2d5f3f',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '1.25rem 2.5rem',
+                        borderRadius: '8px',
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        transition: 'all 0.2s'
+                      }}>
+                        Choose Your Meals
+                        <ChevronRight size={20} />
+                      </button>
+                      <a href="#plans" style={{
+                        color: '#2d5f3f',
+                        fontSize: '1rem',
+                        fontWeight: '600',
+                        textDecoration: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem'
+                      }}>
+                        View Plans
+                        <ChevronRight size={18} />
+                      </a>
+                    </div>
+                    <div style={{
+                      marginTop: '2rem',
+                      padding: '1.5rem',
+                      background: '#fff',
+                      borderRadius: '8px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                    }}>
+                      <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>
+                        Starting at
+                      </div>
+                      <div style={{ fontSize: '2.5rem', fontWeight: '700', color: '#2d5f3f' }}>
+                        $9.99
+                        <span style={{ fontSize: '1.2rem', fontWeight: '500', color: '#666' }}>/serving</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{
+                    position: 'relative',
+                    height: '550px',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 60px rgba(0,0,0,0.15)'
+                  }}>
+                    <img 
+                      src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200&q=80"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                      alt="Fresh meal kit"
+                    />
+                  </div>
+                </div>
+              </section>
+
+              {/* Stats Bar */}
+              <section style={{
+                background: '#2d5f3f',
+                color: '#fff',
+                padding: '2rem'
+              }}>
+                <div style={{
+                  maxWidth: '1400px',
+                  margin: '0 auto',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '2rem',
+                  textAlign: 'center'
+                }}>
+                  <div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>50M+</div>
+                    <div style={{ fontSize: '0.95rem', opacity: 0.9 }}>Meals Delivered</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>100%</div>
+                    <div style={{ fontSize: '0.95rem', opacity: 0.9 }}>Organic Ingredients</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>80+</div>
+                    <div style={{ fontSize: '0.95rem', opacity: 0.9 }}>Weekly Recipes</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>4.8★</div>
+                    <div style={{ fontSize: '0.95rem', opacity: 0.9 }}>Customer Rating</div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Plans Section */}
+              <section id="plans" style={{ padding: '5rem 2rem', background: '#fff' }}>
+                <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                  <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                    <h2 style={{
+                      fontSize: 'clamp(2rem, 4vw, 3rem)',
+                      fontWeight: '700',
+                      color: '#1a1a1a',
+                      marginBottom: '1rem',
+                      fontFamily: '"Libre Baskerville", serif'
+                    }}>
+                      Choose Your Meal Plan
+                    </h2>
+                    <p style={{ fontSize: '1.15rem', color: '#666' }}>
+                      Select the plan that fits your lifestyle
+                    </p>
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '1.5rem',
+                    marginBottom: '4rem'
+                  }}>
+                    {plans.map((plan) => (
+                      <div
+                        key={plan.id}
+                        onClick={() => setSelectedPlan(plan.id)}
+                        style={{
+                          position: 'relative',
+                          border: selectedPlan === plan.id ? '3px solid #2d5f3f' : '2px solid #e5e5e5',
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s',
+                          background: '#fff'
+                        }}
+                      >
+                        {plan.badge && (
+                          <div style={{
+                            position: 'absolute',
+                            top: '1rem',
+                            right: '1rem',
+                            background: '#ff6b35',
+                            color: '#fff',
+                            padding: '0.4rem 0.8rem',
+                            borderRadius: '4px',
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            zIndex: 1
+                          }}>
+                            {plan.badge}
+                          </div>
+                        )}
+                        <div style={{
+                          height: '200px',
+                          background: `url(${plan.image}) center/cover`,
+                          position: 'relative'
+                        }}>
+                          {selectedPlan === plan.id && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '1rem',
+                              left: '1rem',
+                              background: '#2d5f3f',
+                              borderRadius: '50%',
+                              width: '32px',
+                              height: '32px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}>
+                              <Check size={18} color="#fff" strokeWidth={3} />
+                            </div>
+                          )}
+                        </div>
+                        <div style={{ padding: '1.5rem' }}>
+                          <h3 style={{
+                            fontSize: '1.4rem',
+                            fontWeight: '700',
+                            color: '#1a1a1a',
+                            marginBottom: '0.5rem'
+                          }}>
+                            {plan.name}
+                          </h3>
+                          <p style={{ fontSize: '0.95rem', color: '#666', lineHeight: '1.5' }}>
+                            {plan.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Customization */}
+                  <div style={{
+                    background: '#f8f9f5',
+                    padding: '3rem',
+                    borderRadius: '12px',
+                    maxWidth: '900px',
+                    margin: '0 auto'
+                  }}>
+                    <h3 style={{
+                      fontSize: '1.8rem',
+                      fontWeight: '700',
+                      color: '#1a1a1a',
+                      marginBottom: '2rem',
+                      textAlign: 'center'
+                    }}>
+                      Customize Your Box
+                    </h3>
+
+                    <div style={{ marginBottom: '2rem' }}>
+                      <label style={{
+                        display: 'block',
+                        fontSize: '1rem',
+                        fontWeight: '600',
+                        color: '#333',
+                        marginBottom: '1rem'
+                      }}>
+                        Number of People
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        {[2, 4].map(num => (
+                          <button
+                            key={num}
+                            onClick={() => setServings(num)}
+                            style={{
+                              padding: '1.25rem',
+                              background: servings === num ? '#2d5f3f' : '#fff',
+                              color: servings === num ? '#fff' : '#333',
+                              border: servings === num ? 'none' : '2px solid #e5e5e5',
+                              borderRadius: '8px',
+                              fontSize: '1.1rem',
+                              fontWeight: '600',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s'
+                            }}
+                          >
+                            {num} People
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div style={{ marginBottom: '2.5rem' }}>
+                      <label style={{
+                        display: 'block',
+                        fontSize: '1rem',
+                        fontWeight: '600',
+                        color: '#333',
+                        marginBottom: '1rem'
+                      }}>
+                        Recipes Per Week
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+                        {[3, 4, 5, 6].map(num => (
+                          <button
+                            key={num}
+                            onClick={() => setRecipesPerWeek(num)}
+                            style={{
+                              padding: '1.25rem',
+                              background: recipesPerWeek === num ? '#2d5f3f' : '#fff',
+                              color: recipesPerWeek === num ? '#fff' : '#333',
+                              border: recipesPerWeek === num ? 'none' : '2px solid #e5e5e5',
+                              borderRadius: '8px',
+                              fontSize: '1.1rem',
+                              fontWeight: '600',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s'
+                            }}
+                          >
+                            {num}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div style={{
+                      background: '#fff',
+                      padding: '2rem',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                    }}>
+                      <div>
+                        <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.3rem' }}>
+                          Weekly Total
+                        </div>
+                        <div style={{ fontSize: '2.5rem', fontWeight: '700', color: '#2d5f3f' }}>
+                          ${calculatePrice()}
+                        </div>
+                        <div style={{ fontSize: '0.95rem', color: '#666', marginTop: '0.3rem' }}>
+                          ${pricePerServing()} per serving
+                        </div>
+                      </div>
+                      <button style={{
+                        background: '#2d5f3f',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '1.25rem 2.5rem',
+                        borderRadius: '8px',
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        Get Started
+                        <ChevronRight size={20} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* How It Works */}
+              <section id="how-it-works" style={{
+                padding: '5rem 2rem',
+                background: 'linear-gradient(135deg, #f8f9f5 0%, #e8ede5 100%)'
+              }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                  <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                    <h2 style={{
+                      fontSize: 'clamp(2rem, 4vw, 3rem)',
+                      fontWeight: '700',
+                      color: '#1a1a1a',
+                      marginBottom: '1rem',
+                      fontFamily: '"Libre Baskerville", serif'
+                    }}>
+                      How It Works
+                    </h2>
+                    <p style={{ fontSize: '1.15rem', color: '#666' }}>
+                      Fresh ingredients and chef-designed recipes delivered to your door
+                    </p>
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '3rem'
+                  }}>
+                    {[
+                      {
+                        icon: <ChefHat size={40} strokeWidth={1.5} />,
+                        step: '01',
+                        title: 'Choose Your Plan',
+                        description: 'Select meals from 80+ weekly recipes that match your dietary preferences'
+                      },
+                      {
+                        icon: <PackageCheck size={40} strokeWidth={1.5} />,
+                        step: '02',
+                        title: 'We Prep & Deliver',
+                        description: 'Pre-portioned ingredients and easy recipes arrive at your door'
+                      },
+                      {
+                        icon: <Truck size={40} strokeWidth={1.5} />,
+                        step: '03',
+                        title: 'Cook & Enjoy',
+                        description: 'Follow simple steps to create restaurant-quality meals at home'
+                      }
+                    ].map((item, index) => (
+                      <div key={index} style={{ textAlign: 'center' }}>
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '80px',
+                          height: '80px',
+                          background: '#fff',
+                          borderRadius: '50%',
+                          color: '#2d5f3f',
+                          marginBottom: '1.5rem',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                        }}>
+                          {item.icon}
+                        </div>
+                        <div style={{
+                          fontSize: '0.85rem',
+                          fontWeight: '700',
+                          color: '#2d5f3f',
+                          marginBottom: '0.5rem',
+                          letterSpacing: '0.1em'
+                        }}>
+                          STEP {item.step}
+                        </div>
+                        <h3 style={{
+                          fontSize: '1.4rem',
+                          fontWeight: '700',
+                          color: '#1a1a1a',
+                          marginBottom: '1rem'
+                        }}>
+                          {item.title}
+                        </h3>
+                        <p style={{
+                          fontSize: '1rem',
+                          color: '#666',
+                          lineHeight: '1.6'
+                        }}>
+                          {item.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Sample Menu */}
+              <section id="menu" style={{ padding: '5rem 2rem', background: '#fff' }}>
+                <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                  <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                    <h2 style={{
+                      fontSize: 'clamp(2rem, 4vw, 3rem)',
+                      fontWeight: '700',
+                      color: '#1a1a1a',
+                      marginBottom: '1rem',
+                      fontFamily: '"Libre Baskerville", serif'
+                    }}>
+                      This Week's Menu
+                    </h2>
+                    <p style={{ fontSize: '1.15rem', color: '#666' }}>
+                      80+ recipes to choose from every week
+                    </p>
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                    gap: '2rem'
+                  }}>
+                    {[
+                      {
+                        name: 'Herb-Crusted Salmon',
+                        description: 'with roasted vegetables and lemon butter sauce',
+                        time: '35 min',
+                        calories: '580 cal',
+                        image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800&q=80',
+                        tags: ['High Protein', 'Keto']
+                      },
+                      {
+                        name: 'Mediterranean Chickpea Bowl',
+                        description: 'with tahini dressing and fresh herbs',
+                        time: '25 min',
+                        calories: '420 cal',
+                        image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80',
+                        tags: ['Plant-Based', 'Vegan']
+                      },
+                      {
+                        name: 'Grass-Fed Beef Tacos',
+                        description: 'with avocado crema and fresh salsa',
+                        time: '30 min',
+                        calories: '520 cal',
+                        image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&q=80',
+                        tags: ['Quick & Easy', 'Gluten-Free']
+                      },
+                      {
+                        name: 'Thai Coconut Curry',
+                        description: 'with jasmine rice and fresh vegetables',
+                        time: '28 min',
+                        calories: '450 cal',
+                        image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800&q=80',
+                        tags: ['Vegan', 'Dairy-Free']
+                      }
+                    ].map((meal, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          background: '#fff',
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          border: '1px solid #e5e5e5',
+                          transition: 'all 0.3s',
+                          cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-8px)';
+                          e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.12)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        <div style={{
+                          height: '220px',
+                          background: `url(${meal.image}) center/cover`,
+                          position: 'relative'
+                        }}>
+                          <div style={{
+                            position: 'absolute',
+                            bottom: '1rem',
+                            left: '1rem',
+                            display: 'flex',
+                            gap: '0.5rem'
+                          }}>
+                            {meal.tags.map((tag, i) => (
+                              <span
+                                key={i}
+                                style={{
+                                  background: 'rgba(255,255,255,0.95)',
+                                  padding: '0.4rem 0.8rem',
+                                  borderRadius: '4px',
+                                  fontSize: '0.75rem',
+                                  fontWeight: '600',
+                                  color: '#2d5f3f'
+                                }}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div style={{ padding: '1.5rem' }}>
+                          <h3 style={{
+                            fontSize: '1.25rem',
+                            fontWeight: '700',
+                            color: '#1a1a1a',
+                            marginBottom: '0.5rem'
+                          }}>
+                            {meal.name}
+                          </h3>
+                          <p style={{
+                            fontSize: '0.95rem',
+                            color: '#666',
+                            marginBottom: '1rem',
+                            lineHeight: '1.5'
+                          }}>
+                            {meal.description}
+                          </p>
+                          <div style={{
+                            display: 'flex',
+                            gap: '1.5rem',
+                            fontSize: '0.85rem',
+                            color: '#888',
+                            fontWeight: '500'
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <Clock size={16} />
+                              {meal.time}
+                            </div>
+                            <div>{meal.calories}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                    <button style={{
+                      background: '#2d5f3f',
+                      color: '#fff',
+                      border: 'none',
+                      padding: '1rem 2.5rem',
+                      borderRadius: '8px',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      cursor: 'pointer'
+                    }}>
+                      View Full Menu
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              {/* Benefits */}
+              <section style={{
+                padding: '5rem 2rem',
+                background: '#2d5f3f',
+                color: '#fff'
+              }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                  <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                    <h2 style={{
+                      fontSize: 'clamp(2rem, 4vw, 3rem)',
+                      fontWeight: '700',
+                      marginBottom: '1rem',
+                      fontFamily: '"Libre Baskerville", serif'
+                    }}>
+                      Why The Mission Kitchen?
+                    </h2>
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '2.5rem'
+                  }}>
+                    {[
+                      { icon: <Leaf size={32} />, title: '100% Organic', desc: 'USDA certified organic produce in every box' },
+                      { icon: <Users size={32} />, title: 'Chef-Designed', desc: 'Recipes created by professional chefs' },
+                      { icon: <PackageCheck size={32} />, title: 'Pre-Portioned', desc: 'No food waste, exact amounts delivered' },
+                      { icon: <Truck size={32} />, title: 'Carbon Neutral', desc: 'We offset 100% of our delivery emissions' },
+                      { icon: <Check size={32} />, title: 'No Commitment', desc: 'Skip, pause or cancel anytime' },
+                      { icon: <Star size={32} />, title: 'Premium Quality', desc: 'Responsibly sourced proteins & produce' }
+                    ].map((benefit, index) => (
+                      <div key={index} style={{ textAlign: 'center' }}>
+                        <div style={{
+                          display: 'inline-flex',
+                          marginBottom: '1rem',
+                          color: '#a8d5ba'
+                        }}>
+                          {benefit.icon}
+                        </div>
+                        <h3 style={{
+                          fontSize: '1.25rem',
+                          fontWeight: '700',
+                          marginBottom: '0.5rem'
+                        }}>
+                          {benefit.title}
+                        </h3>
+                        <p style={{
+                          fontSize: '0.95rem',
+                          opacity: 0.9,
+                          lineHeight: '1.5'
+                        }}>
+                          {benefit.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* CTA Section */}
+              <section style={{
+                padding: '5rem 2rem',
+                background: 'linear-gradient(135deg, #f8f9f5 0%, #e8ede5 100%)',
+                textAlign: 'center'
+              }}>
+                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+                  <h2 style={{
+                    fontSize: 'clamp(2rem, 4vw, 3rem)',
+                    fontWeight: '700',
+                    color: '#1a1a1a',
+                    marginBottom: '1rem',
+                    fontFamily: '"Libre Baskerville", serif'
+                  }}>
+                    Start Your Journey to Better Eating
+                  </h2>
+                  <p style={{
+                    fontSize: '1.15rem',
+                    color: '#666',
+                    marginBottom: '2.5rem',
+                    lineHeight: '1.6'
+                  }}>
+                    Join thousands who've discovered the joy of healthy, delicious meals delivered to their door.
+                  </p>
+                  <button style={{
+                    background: '#2d5f3f',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '1.25rem 3rem',
+                    borderRadius: '8px',
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem'
+                  }}>
+                    Get Started Today
+                    <ChevronRight size={20} />
+                  </button>
+                  <div style={{
+                    marginTop: '1.5rem',
+                    fontSize: '0.9rem',
+                    color: '#888'
+                  }}>
+                    First box up to 60% off • Free shipping • Cancel anytime
+                  </div>
+                </div>
+              </section>
+
+              {/* Footer */}
+              <footer style={{
+                background: '#1a1a1a',
+                color: '#fff',
+                padding: '4rem 2rem 2rem'
+              }}>
+                <div style={{
+                  maxWidth: '1400px',
+                  margin: '0 auto'
+                }}>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '3rem',
+                    marginBottom: '3rem'
+                  }}>
+                    <div>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '1.3rem',
+                        fontWeight: '700',
+                        marginBottom: '1rem'
+                      }}>
+                        <Leaf size={24} />
+                        <span>The Mission Kitchen</span>
+                      </div>
+                      <p style={{
+                        fontSize: '0.9rem',
+                        opacity: 0.7,
+                        lineHeight: '1.6'
+                      }}>
+                        Organic meal kits delivered fresh to your door.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 style={{ marginBottom: '1rem', fontWeight: '600' }}>Company</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', fontSize: '0.9rem', opacity: 0.7 }}>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>About Us</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Careers</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Press</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Blog</a>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 style={{ marginBottom: '1rem', fontWeight: '600' }}>Support</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', fontSize: '0.9rem', opacity: 0.7 }}>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Help Center</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Contact Us</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>FAQs</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Shipping Info</a>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 style={{ marginBottom: '1rem', fontWeight: '600' }}>Legal</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', fontSize: '0.9rem', opacity: 0.7 }}>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Privacy Policy</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Terms of Service</a>
+                        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Cookie Policy</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{
+                    borderTop: '1px solid rgba(255,255,255,0.1)',
+                    paddingTop: '2rem',
+                    textAlign: 'center',
+                    fontSize: '0.85rem',
+                    opacity: 0.6
+                  }}>
+                    © 2024 The Mission Kitchen Meal Delivery. All rights reserved.
+                  </div>
+                </div>
+              </footer>
+
+              <style>{`
+                * {
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+                }
+                
+                body {
+                  margin: 0;
+                  -webkit-font-smoothing: antialiased;
+                }
+                
+                button:hover {
+                  opacity: 0.9;
+                  transform: translateY(-2px);
+                }
+                
+                a:hover {
+                  opacity: 0.8;
+                }
+              `}</style>
+            </div>
+          );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<MissionKitchen />);
+    </script>
+</body>
+</html>
